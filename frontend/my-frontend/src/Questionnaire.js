@@ -11,7 +11,7 @@ function Questionnaire() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/questions").then((response) => {
+    axios.get("https://course-recommendation-system-b1wi.onrender.com/questions").then((response) => {
       setQuestions(response.data);
     });
   }, []);
@@ -19,7 +19,7 @@ function Questionnaire() {
   const handleSubmit = () => {
     const answers = questions.map((q, index) => responses[index] || "");
     axios
-      .post("http://127.0.0.1:5000/recommend", { responses: answers })
+      .post("https://course-recommendation-system-b1wi.onrender.com/recommend", { responses: answers })
       .then((response) => {
         navigate("/result", {
           state: {
