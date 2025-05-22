@@ -32,6 +32,11 @@ courses = [
 # Load questionnaire
 questionnaire_df = pd.read_csv("questionnaire.csv")  # CSV format: 'Question', 'Option a', 'Option b', 'Option c', 'Option d'
 
+@app.route('/')
+def home():
+    return "Welcome to the Flask Course Recommendation System!"
+
+
 @app.route('/questions', methods=['GET'])
 def get_questions():
     questions = []

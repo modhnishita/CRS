@@ -11,7 +11,7 @@ function Questionnaire() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("https://course-recommendation-system-b1wi.onrender.com/questions").then((response) => {
+    axios.get("https://127.0.0.1:5000/questions").then((response) => {
       setQuestions(response.data);
     });
   }, []);
