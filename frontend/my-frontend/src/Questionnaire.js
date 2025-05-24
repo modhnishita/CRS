@@ -10,16 +10,26 @@ function Questionnaire() {
   const [responses, setResponses] = useState({});
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://127.0.0.1:5000";
+
   useEffect(() => {
-    axios.get("https://127.0.0.1:5000/questions").then((response) => {
+    document.title = "Questionnaire | Course Recommender";
+    axios.get(${API_BASE_URL}/questions).then((response) => {
       setQuestions(response.data);
     });
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleSubmit = () => {
+
+    const unansweredCount = questions.length - Object.keys(responses).length;
+    if (unansweredCount > 0) {
+      alert(Please answer all ${questions.length} questions. You have ${unansweredCount} left.);
+      return;
+    }
+
     const answers = questions.map((q, index) => responses[index] || "");
     axios
-      .post("https://course-recommendation-system-b1wi.onrender.com/recommend", { responses: answers })
+      .post(${API_BASE_URL}/recommend, { responses: answers })
       .then((response) => {
         navigate("/result", {
           state: {
@@ -29,7 +39,7 @@ function Questionnaire() {
         });
       })
       .catch((error) => {
-        console.error("❌ Error submitting recommendation:", error);
+        console.error("Error submitting recommendation:", error);
         alert("Failed to fetch recommendation. Check backend.");
       });
 
@@ -45,7 +55,7 @@ function Questionnaire() {
             <label key={i} className="option-label">
               <input
                 type="radio"
-                name={`question-${index}`}
+                name={question-${index}}
                 value={option}
                 onChange={() => setResponses({ ...responses, [index]: option })}
               />
@@ -57,7 +67,6 @@ function Questionnaire() {
       <button onClick={handleSubmit} className="submit-btn">Submit</button>
     </div>
   );
-  
 };
 
 export default Questionnaire;
