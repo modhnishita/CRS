@@ -14,7 +14,7 @@ function Questionnaire() {
 
   useEffect(() => {
     document.title = "Questionnaire | Course Recommender";
-    axios.get(${API_BASE_URL}/questions).then((response) => {
+    axios.get(`${API_BASE_URL}/questions`).then((response) => {
       setQuestions(response.data);
     });
   }, [API_BASE_URL]);
@@ -23,13 +23,13 @@ function Questionnaire() {
 
     const unansweredCount = questions.length - Object.keys(responses).length;
     if (unansweredCount > 0) {
-      alert(Please answer all ${questions.length} questions. You have ${unansweredCount} left.);
+      alert(`Please answer all ${questions.length} questions. You have ${unansweredCount} left.`);
       return;
     }
 
     const answers = questions.map((q, index) => responses[index] || "");
     axios
-      .post(${API_BASE_URL}/recommend, { responses: answers })
+      .post(`${API_BASE_URL}/recommend`, { responses: answers })
       .then((response) => {
         navigate("/result", {
           state: {
@@ -55,7 +55,7 @@ function Questionnaire() {
             <label key={i} className="option-label">
               <input
                 type="radio"
-                name={question-${index}}
+                name={`question-${index}`}
                 value={option}
                 onChange={() => setResponses({ ...responses, [index]: option })}
               />
