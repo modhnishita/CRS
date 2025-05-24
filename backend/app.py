@@ -5,6 +5,7 @@ from transformers import BertTokenizer, BertModel
 from flask_cors import CORS
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+
 import multiprocessing
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -30,11 +31,13 @@ courses = [
 ]
 
 # Load questionnaire
-questionnaire_df = pd.read_csv("questionnaire.csv")  # CSV format: 'Question', 'Option a', 'Option b', 'Option c', 'Option d'
+import os 
+csv_path = os.path.join(os.path.dirname(__file__), 'questionnaire.csv')
+questionnaire_df = pd.read_csv(csv_path)  # CSV format: 'Question', 'Option a', 'Option b', 'Option c', 'Option d'
 
-@app.route('/')
-def home():
-    return "Welcome to the Flask Course Recommendation System!"
+#@app.route('/')
+#def home():
+#    return "Welcome to the Flask Course Recommendation System!"
 
 
 @app.route('/questions', methods=['GET'])
