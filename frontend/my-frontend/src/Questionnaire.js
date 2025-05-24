@@ -9,6 +9,7 @@ function Questionnaire() {
   const [questions, setQuestions] = useState([]);
   const [responses, setResponses] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://127.0.0.1:5000";
 
@@ -27,6 +28,8 @@ function Questionnaire() {
       return;
     }
 
+    setLoading(true); 
+
     const answers = questions.map((q, index) => responses[index] || "");
     axios
       .post(`${API_BASE_URL}/recommend`, { responses: answers })
@@ -41,9 +44,20 @@ function Questionnaire() {
       .catch((error) => {
         console.error("Error submitting recommendation:", error);
         alert("Failed to fetch recommendation. Check backend.");
-      });
-
+      })
+      .finally(() => {
+      setLoading(false); // Stop loading (in case navigate fails or stays on page)
+    });
   };
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <h2>Processing your answers...</h2>
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
